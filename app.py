@@ -19,9 +19,10 @@ db.init_app(app)
 
 @app.route('/')
 def home():
-    return jsonify('Hola Mundo')
+    return jsonify('Creando Star Wars API')
 
 @app.route("/user", methods=["POST", "GET"])
+
 def user():
     if request.method == "GET":
         user = User.query.get(1)

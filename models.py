@@ -20,7 +20,7 @@ class User(db.Model):
             'first_name': self.first_name,
             'last_name': self.last_name,
             'password': self.password,
-            'email': self.email,
+            'email': self.email
             
         }
     def serialize_just_username(self):
