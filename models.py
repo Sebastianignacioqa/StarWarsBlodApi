@@ -4,10 +4,11 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'user'
     id= db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
+    user_name = db.Column(db.String(50), nullable=False)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(10), nullable=False)
     email = db.Column(db.String(30), nullable=False)
-    isActive = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return "<User %r>" % self.id
@@ -15,13 +16,15 @@ class User(db.Model):
     def serialize(self):
         return {
             'id': self.id,
-            'name': self.name,
+            'user_name': self.user_name,
+            'first_name': self.first_name
+            'last_name': self.last_name
             'password': self.password,
             'email': self.email,
-            'isActive': self.isActive
+            
         }
     def serialize_just_username(self):
         return {
             'id': self.id,
-            'name': self.name
+            'first_name': self.first_name
         }
