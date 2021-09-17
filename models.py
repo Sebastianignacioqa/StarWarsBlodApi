@@ -17,8 +17,8 @@ class User(db.Model):
         return {
             'id': self.id,
             'user_name': self.user_name,
-            'first_name': self.first_name
-            'last_name': self.last_name
+            'first_name': self.first_name,
+            'last_name': self.last_name,
             'password': self.password,
             'email': self.email,
             

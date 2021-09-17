@@ -13,8 +13,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['ENV'] = 'development'
 app.config['DEBUG'] = True
 #manager = Manager(app)
-db.init_app(app)
 Migrate(app, db)
+db.init_app(app)
+
 
 @app.route('/')
 def home():
