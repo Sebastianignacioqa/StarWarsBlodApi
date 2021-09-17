@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from models import db, User
+from models import db, User, Favorite
 from flask_migrate import Migrate
 #from flask_script import Manager
 
