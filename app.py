@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from models import db, User, Favorite
+from models import db, User, Planets
 from flask_migrate import Migrate
 #from flask_script import Manager
 
@@ -25,7 +25,7 @@ def home():
 
 def user():
     if request.method == "GET":
-        user = User.query.get(1)
+        user = User.query.get(2)
         if user is not None:
             return jsonify(user.serialize_just_username())
     else:
@@ -41,6 +41,32 @@ def user():
         db.session.commit()
 
     return jsonify(user.serialize()), 200
+
+
+@app.route("/planets", methods=["POST", "GET"])
+
+def planets():
+    if request.method == "GET":
+        planets = Planets.query.get(1)
+        if planets is not None:
+            return jsonify(planets.serialize_just_username())
+    else:
+        planets = Planets()
+        planets.name = request.json.get("name")
+        planets.climate = request.json.get("climate")
+        planets.terrain = request.json.get("terrain")
+        planets.population = request.json.get("population")
+        planets.diameter = request.json.get("diameter")
+        planets.rotation_period = request.json.get("rotation_period")
+        planets.orbital_period = request.json.get("orbital_period")
+        planets.surface_water = request.json.get("surface_water")
+        planets.residents = request.json.get("residents")
+        
+        
+        db.session.add(planets)
+        db.session.commit()
+
+    return jsonify(planets.serialize()), 200
 
 
 
