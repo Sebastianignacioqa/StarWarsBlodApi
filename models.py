@@ -152,4 +152,35 @@ class Vehicles(db.Model):
     pilots = db.Column(db.String(200))
     #characters = db.relationship('Characters')
 
+    def __repr__(self):
+        return "<Vehicles %r>" % self.vehicle_id
+
+    def serialize(self):
+        return {
+            'vehicle_id': self.vehicle_id,
+            'name': self.name,
+            'model': self.model,
+            'manufacturer': self.manufacturer,
+            'cost_in_credits': self.cost_in_credits,
+            'crew': self.crew, 
+            'passengers': self.passengers, 
+            'cargo_capacity': self.cargo_capacity, 
+            'vehicle_class': self.vehicle_class,
+            'pilots ': self.pilots 
+        }
+
+    def serialize_just_username(self):
+        return {
+            'vehicle_id': self.vehicle_id,
+            'name': self.name,
+            'model': self.model,
+            'manufacturer': self.manufacturer,
+            'cost_in_credits': self.cost_in_credits,
+            'crew': self.crew, 
+            'passengers': self.passengers, 
+            'cargo_capacity': self.cargo_capacity, 
+            'vehicle_class': self.vehicle_class,
+            'pilots ': self.pilots
+        }
+
 

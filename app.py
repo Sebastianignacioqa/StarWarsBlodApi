@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from models import db, User, Planets, Characters
+from models import db, User, Planets, Characters, Vehicles
 from flask_migrate import Migrate
 #from flask_script import Manager
 
@@ -94,6 +94,31 @@ def characters():
         db.session.commit()
 
     return jsonify(characters.serialize()), 200
+
+
+@app.route("/vehicles", methods=["POST", "GET"])
+
+def vehicles():
+    if request.method == "GET":
+        vehicles = Vehicles.query.get(1)
+        if vehicles is not None:
+            return jsonify(vehicles.serialize_just_username())
+    else:
+        vehicles = Vehicles()
+        vehicles.name = request.json.get("name")
+        vehicles.model = request.json.get("model")
+        vehicles.manufacturer = request.json.get("manufacturer")
+        vehicles.cost_in_credits = request.json.get("cost_in_credits")
+        vehicles.crew = request.json.get("crew")
+        vehicles.passengers = request.json.get("passengers")
+        vehicles.cargo_capacity = request.json.get("cargo_capacity")
+        vehicles.vehicle_class = request.json.get("vehicle_class")
+        vehicles.pilots = request.json.get("pilots")
+
+        db.session.add(vehicles)
+        db.session.commit()
+
+    return jsonify(vehicles.serialize()), 200
 
 
 
