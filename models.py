@@ -21,7 +21,7 @@ class Favorite(db.Model):
     fav_vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.vehicle_id'))
     vehicles = db.relationship('Vehicles')
 
-class Planets(Base):
+class Planets(db.Model):
     __tablename__ = 'planets'
     planet_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200))
@@ -32,10 +32,10 @@ class Planets(Base):
     rotation_period = db.Column(db.Integer)
     orbital_period = db.Column(db.Integer)
     surface_water = db.Column(db.Integer)
-    residents = db.Column(db.Integer, ForeignKey('characters.character_id'))
+    residents = db.Column(db.Integer, db.ForeignKey('characters.character_id'))
     characters = db.relationship('Characters')
 
-class Characters(Base):
+class Characters(db.Model):
     __tablename__ = 'characters'
     character_id = db.Column(db.Integer, primary_key=True)
     name =  db.Column(db.String(200))
@@ -48,10 +48,10 @@ class Characters(Base):
     gender = db.Column(db.String(200))
     homeworld = db.Column(db.Integer, db.ForeignKey('planets.planet_id'))
     planets = db.relationship('Planets')
-    vehicles = db.Column(Integer, db.ForeignKey('vehicles.vehicle_id'))
+    vehicles_id = db.Column(db.Integer, db.ForeignKey('vehicles.vehicle_id'))
     vehicles = db.relationship('Vehicles')
 
-class Vehicles(Base):
+class Vehicles(db.Model):
     __tablename__ = 'vehicles'
     vehicle_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200))
