@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from models import db, User, Planets
+from models import db, User, Planets, Characters
 from flask_migrate import Migrate
 #from flask_script import Manager
 
@@ -21,6 +21,7 @@ db.init_app(app)
 def home():
     return jsonify('Creando Star Wars API')
 
+
 @app.route("/user", methods=["POST", "GET"])
 
 def user():
@@ -36,11 +37,11 @@ def user():
         user.password = request.json.get("password")
         user.email = request.json.get("email")
         
-        
         db.session.add(user)
         db.session.commit()
 
     return jsonify(user.serialize()), 200
+
 
 
 @app.route("/planets", methods=["POST", "GET"])
@@ -62,11 +63,37 @@ def planets():
         planets.surface_water = request.json.get("surface_water")
         planets.residents = request.json.get("residents")
         
-        
         db.session.add(planets)
         db.session.commit()
 
     return jsonify(planets.serialize()), 200
+
+
+
+@app.route("/characters", methods=["POST", "GET"])
+
+def characters():
+    if request.method == "GET":
+        characters = Characters.query.get(1)
+        if characters is not None:
+            return jsonify(characters.serialize_just_username())
+    else:
+        characters = Characters()
+        characters.name = request.json.get("name")
+        characters.height = request.json.get("height")
+        characters.mass = request.json.get("mass")
+        characters.hair_color = request.json.get("hair_color")
+        characters.skin_color = request.json.get("skin_color")
+        characters.eye_color = request.json.get("eye_color")
+        characters.birth_year = request.json.get("birth_year")
+        characters.gender = request.json.get("gender")
+        characters.homeworld = request.json.get("homeworld")
+        #characters.vehicles = request.json.get("vehicles")
+        
+        db.session.add(characters)
+        db.session.commit()
+
+    return jsonify(characters.serialize()), 200
 
 
 

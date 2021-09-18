@@ -100,10 +100,43 @@ class Characters(db.Model):
     eye_color = db.Column(db.String(200))
     birth_year = db.Column(db.Integer)
     gender = db.Column(db.String(200))
-    #homeworld = db.Column(db.Integer, db.ForeignKey('planets.planet_id'))
+    homeworld = db.Column(db.String(200))
     #planets = db.relationship('Planets')
-    #vehicles_id = db.Column(db.Integer, db.ForeignKey('vehicles.vehicle_id'))
+    #vehicles = db.Column(db.String(200))
     #vehicles = db.relationship('Vehicles')
+
+    def __repr__(self):
+        return "<Characters %r>" % self.character_id
+
+    def serialize(self):
+        return {
+            'character_id': self.character_id,
+            'name': self.name,
+            'height': self.height,
+            'mass': self.mass,
+            'hair_color': self.hair_color,
+            'skin_color': self.skin_color, 
+            'eye_color': self.eye_color, 
+            'birth_year': self.birth_year, 
+            'gender': self.gender,
+            'homeworld': self.homeworld
+            #'vehicles': self.vehicles
+        }
+
+    def serialize_just_username(self):
+        return {
+            'character_id': self.character_id,
+            'name': self.name,
+            'height': self.height,
+            'mass': self.mass,
+            'hair_color': self.hair_color,
+            'skin_color': self.skin_color, 
+            'eye_color': self.eye_color, 
+            'birth_year': self.birth_year, 
+            'gender': self.gender,
+            'homeworld': self.homeworld
+            #'vehicles': self.vehicles
+        }
 
 class Vehicles(db.Model):
     __tablename__ = 'vehicles'
@@ -116,7 +149,7 @@ class Vehicles(db.Model):
     passengers = db.Column(db.Integer)
     cargo_capacity = db.Column(db.Integer)
     vehicle_class = db.Column(db.String(200))
-    #pilots = db.Column(db.Integer, db.ForeignKey('characters.character_id'))
+    pilots = db.Column(db.String(200))
     #characters = db.relationship('Characters')
 
 
