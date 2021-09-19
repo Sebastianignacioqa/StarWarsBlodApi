@@ -42,7 +42,21 @@ def user():
 
     return jsonify(user.serialize()), 200
 
+@app.route("/favorite", methods=["POST", "GET"])
 
+def favorite():
+    if request.method == "GET":
+        favorite = favorite.query.get(1)
+        if planets is not None:
+            return jsonify(favorite.serialize_just_username())
+    else:
+        favorite = Favorite()
+        favorite.user_id = request.json.get("user_id")
+        
+        db.session.add(favorite)
+        db.session.commit()
+
+    return jsonify(favorite.serialize()), 200
 
 @app.route("/planets", methods=["POST", "GET"])
 
