@@ -44,6 +44,17 @@ class Favorite(db.Model):
     #fav_vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.vehicle_id'))
     #vehicles = db.relationship('Vehicles')
 
+    def __repr__(self):
+        return "<Favorite %r>" % self.id
+
+    def serialize(self):
+        return {
+            'user_id': self.user.id
+        }
+    def serialize_just_username(self): #Aca estoy retornando lo mismo dado que es el user.id lo que deberia retornar esta funcion
+        return {
+            'user_id': self.user.id 
+        }
 class Planets(db.Model):
     __tablename__ = 'planets'
     planet_id = db.Column(db.Integer, primary_key=True)
@@ -61,7 +72,7 @@ class Planets(db.Model):
     def __repr__(self):
         return "<Planets %r>" % self.planet_id
 
-    def serialize(self):
+    def serialize(self): #Esta funcion si se puede reutilizar
         return {
             'planet_id': self.planet_id,
             'name': self.name,
@@ -75,7 +86,7 @@ class Planets(db.Model):
             'residents': self.residents
         }
 
-    def serialize_just_username(self):
+    def serialize_just_username(self): #Esto no puede ser igual ya que esta funcion solo existe para retornar el username.
         return {
             'planet_id': self.planet_id,
             'name': self.name,
