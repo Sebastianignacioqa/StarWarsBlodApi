@@ -47,8 +47,8 @@ def user():
 def favorite():
     if request.method == "GET":
         favorite = favorite.query.get(1)
-        if planets is not None:
-            return jsonify(favorite.serialize_just_username())
+        if favorite is not None:    #Lo cambié por "favorite" porque decia "planets"
+            return jsonify(favorite.serialize_just_userid())
     else:
         favorite = Favorite()
         favorite.user_id = request.json.get("user_id")
@@ -64,7 +64,7 @@ def planets():
     if request.method == "GET":
         planets = Planets.query.get(1)
         if planets is not None:
-            return jsonify(planets.serialize_just_username())
+            return jsonify(planets.serialize_just_name())
     else:
         planets = Planets()
         planets.name = request.json.get("name")
@@ -90,7 +90,7 @@ def characters():
     if request.method == "GET":
         characters = Characters.query.get(1)
         if characters is not None:
-            return jsonify(characters.serialize_just_username())
+            return jsonify(characters.serialize_just_name())
     else:
         characters = Characters()
         characters.name = request.json.get("name")
@@ -116,7 +116,7 @@ def vehicles():
     if request.method == "GET":
         vehicles = Vehicles.query.get(1)
         if vehicles is not None:
-            return jsonify(vehicles.serialize_just_username())
+            return jsonify(vehicles.serialize_just_name())
     else:
         vehicles = Vehicles()
         vehicles.name = request.json.get("name")

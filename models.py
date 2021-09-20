@@ -26,11 +26,8 @@ class User(db.Model):
     def serialize_just_username(self):
         return {
             'id': self.id,
-            'user_name': self.user_name,
-            'first_name': self.first_name,
-            'last_name': self.last_name,
-            'password': self.password,
-            'email': self.email 
+            'user_name': self.user_name
+            
         }
 
 class Favorite(db.Model):
@@ -51,10 +48,11 @@ class Favorite(db.Model):
         return {
             'user_id': self.user.id
         }
-    def serialize_just_username(self): #Aca estoy retornando lo mismo dado que es el user.id lo que deberia retornar esta funcion
+    def serialize_just_userid(self): #Aca estoy retornando lo mismo dado que es el user.id lo que deberia retornar esta funcion
         return {
             'user_id': self.user.id 
         }
+
 class Planets(db.Model):
     __tablename__ = 'planets'
     planet_id = db.Column(db.Integer, primary_key=True)
@@ -86,18 +84,10 @@ class Planets(db.Model):
             'residents': self.residents
         }
 
-    def serialize_just_username(self): #Esto no puede ser igual ya que esta funcion solo existe para retornar el username.
+    def serialize_just_name(self): #Esto no puede ser igual ya que esta funcion solo existe para retornar el username.
         return {
             'planet_id': self.planet_id,
-            'name': self.name,
-            'climate': self.climate,
-            'terrain': self.terrain,
-            'population': self.population,
-            'diameter': self.diameter, 
-            'rotation_period': self.rotation_period, 
-            'orbital_period': self.orbital_period, 
-            'surface_water': self.surface_water,
-            'residents': self.residents
+            'name': self.name
         }
 
 class Characters(db.Model):
@@ -134,19 +124,10 @@ class Characters(db.Model):
             #'vehicles': self.vehicles
         }
 
-    def serialize_just_username(self):
+    def serialize_just_name(self):
         return {
             'character_id': self.character_id,
-            'name': self.name,
-            'height': self.height,
-            'mass': self.mass,
-            'hair_color': self.hair_color,
-            'skin_color': self.skin_color, 
-            'eye_color': self.eye_color, 
-            'birth_year': self.birth_year, 
-            'gender': self.gender,
-            'homeworld': self.homeworld
-            #'vehicles': self.vehicles
+            'name': self.name
         }
 
 class Vehicles(db.Model):
@@ -180,18 +161,10 @@ class Vehicles(db.Model):
             'pilots ': self.pilots 
         }
 
-    def serialize_just_username(self):
+    def serialize_just_name(self):
         return {
             'vehicle_id': self.vehicle_id,
-            'name': self.name,
-            'model': self.model,
-            'manufacturer': self.manufacturer,
-            'cost_in_credits': self.cost_in_credits,
-            'crew': self.crew, 
-            'passengers': self.passengers, 
-            'cargo_capacity': self.cargo_capacity, 
-            'vehicle_class': self.vehicle_class,
-            'pilots ': self.pilots
+            'name': self.name
         }
 
 
