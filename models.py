@@ -34,7 +34,10 @@ class Favorite(db.Model):
     __tablename__ = 'favorite'
     id= db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    #fav_planet_id = db.Column(db.Integer, db.ForeignKey('planets.planet_id'))
+    fav_planet_id = db.Column(db.Integer, db.ForeignKey('planets.planet_id'))
+    fav_character_id = db.Column(db.Integer, db.ForeignKey('characters.character_id'))
+    fav_vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicles.vehicle_id'))
+
     #planets = db.relationship('Planets')
     #fav_character_id = db.Column(db.Integer, db.ForeignKey('characters.character_id'))
     #characters = db.relationship('Characters')
@@ -46,11 +49,11 @@ class Favorite(db.Model):
 
     def serialize(self):
         return {
-            'user_id': self.user.id
+            'user_id': self.user_id
         }
     def serialize_just_userid(self): #Aca estoy retornando lo mismo dado que es el user.id lo que deberia retornar esta funcion
         return {
-            'user_id': self.user.id 
+            'user_id': self.user_id 
         }
 
 class Planets(db.Model):
@@ -84,11 +87,13 @@ class Planets(db.Model):
             'residents': self.residents
         }
 
-    def serialize_just_name(self): #Esto no puede ser igual ya que esta funcion solo existe para retornar el username.
+    def serialize_just_name(self): #Esta funcion debe retornar la lista completa de planetas
         return {
             'planet_id': self.planet_id,
             'name': self.name
         }
+
+
 
 class Characters(db.Model):
     __tablename__ = 'characters'

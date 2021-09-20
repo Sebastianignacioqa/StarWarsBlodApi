@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from models import db, User, Planets, Characters, Vehicles
+from models import db, User, Planets, Characters, Vehicles, Favorite
 from flask_migrate import Migrate
 #from flask_script import Manager
 
@@ -23,12 +23,11 @@ def home():
 
 
 @app.route("/user", methods=["POST", "GET"])
-
 def user():
     if request.method == "GET":
-        user = User.query.get(2)
+        user = User.query.get(1)
         if user is not None:
-            return jsonify(user.serialize_just_username())
+            return jsonify(user.serialize())
     else:
         user = User()
         user.user_name = request.json.get("user_name")
@@ -42,27 +41,31 @@ def user():
 
     return jsonify(user.serialize()), 200
 
-@app.route("/favorite", methods=["POST", "GET"])
 
+
+@app.route("/favorite", methods=["POST", "GET"])
 def favorite():
     if request.method == "GET":
-        favorite = favorite.query.get(1)
+        favorite = Favorite.query.get(1)
         if favorite is not None:    #Lo cambié por "favorite" porque decia "planets"
-            return jsonify(favorite.serialize_just_userid())
+            return jsonify(favorite.serialize())
     else:
         favorite = Favorite()
         favorite.user_id = request.json.get("user_id")
-        
+        favorite.fav_planet_id = request.json.get("fav_planet_id")
+        favorite.fav_character_id = request.json.get("fav_character_id")
+        favorite.fav_vehicle_id = request.json.get("fav_vehicle_id")
+
         db.session.add(favorite)
         db.session.commit()
 
     return jsonify(favorite.serialize()), 200
 
-@app.route("/planets", methods=["POST", "GET"])
 
+@app.route("/planets", methods=["POST", "GET"])
 def planets():
     if request.method == "GET":
-        planets = Planets.query.get(1)
+        planets = Planets.query.get(4)
         if planets is not None:
             return jsonify(planets.serialize_just_name())
     else:
@@ -82,10 +85,14 @@ def planets():
 
     return jsonify(planets.serialize()), 200
 
+@app.route("/planets/planetlist", methods=["POST", "GET"])
+def planetlist():    
+    if request.method == "GET":
+        planetas = ["Tatooine", "Alderaan", "Yavin IV", "Hoth", "Dagobah", "Bespin"]
+        return jsonify(planetas(map(planetas, planetas)))
 
 
 @app.route("/characters", methods=["POST", "GET"])
-
 def characters():
     if request.method == "GET":
         characters = Characters.query.get(1)
@@ -111,7 +118,6 @@ def characters():
 
 
 @app.route("/vehicles", methods=["POST", "GET"])
-
 def vehicles():
     if request.method == "GET":
         vehicles = Vehicles.query.get(1)
