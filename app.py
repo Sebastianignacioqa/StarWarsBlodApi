@@ -82,18 +82,30 @@ def planets():
         planets.surface_water = request.json.get("surface_water")
         planets.residents = request.json.get("residents")
         
+        
         db.session.add(planets)
         db.session.commit()
 
     return jsonify(planets.serialize()), 200
 
-@app.route("/planets/planetlist", methods=["POST", "GET"])
-def planetlist(): 
-    planetas = ["Tatooine", "Alderaan", "Yavin IV", "Hoth", "Dagobah", "Bespin"]   
-    if request.method == "GET":
-        numero = 0
-        return jsonify(planetas(map(numero, planetas)))
+@app.route("/addplanets", methods=["POST"])
+def addplanets(): 
+    planets_list = request.json.get("planets_list")  
+    for planets in planets_list:
+        new_planets = Planets()
+        new_planets.name= planets["name"]
+        new_planets.climate = planets["climate"]
+        new_planets.terrain = planets["terrain"]
+        new_planets.population = planets["population"]
+        new_planets.diameter = planets["diameter"]
+        new_planets.rotation_period = planets["rotation_period"]
+        new_planets.orbital_period = planets["orbital_period"]
+        new_planets.surface_water = planets["surface_water"]
+        new_planets.residents = planets["residents"]
 
+        db.session.add(new_planets)
+        db.session.commit()
+    return jsonify("Done"), 200
 
 @app.route("/characters", methods=["POST", "GET"])
 def characters():
