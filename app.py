@@ -25,9 +25,10 @@ def home():
 @app.route("/user", methods=["POST", "GET"])
 def user():
     if request.method == "GET":
-        user = User.query.get(1)
+        user = User.query.all()
+        user = list(map(lambda user: user.serialize(), user))
         if user is not None:
-            return jsonify(user.serialize())
+            return jsonify(user)
     else:
         user = User()
         user.user_name = request.json.get("user_name")
@@ -65,9 +66,10 @@ def favorite():
 @app.route("/planets", methods=["POST", "GET"])
 def planets():
     if request.method == "GET":
-        planets = Planets.query.get(4)
+        planets = Planets.query.all()
+        planets = list(map(lambda planets: planets.serialize(), planets))
         if planets is not None:
-            return jsonify(planets.serialize_just_name())
+            return jsonify(planets)
     else:
         planets = Planets()
         planets.name = request.json.get("name")
@@ -86,10 +88,11 @@ def planets():
     return jsonify(planets.serialize()), 200
 
 @app.route("/planets/planetlist", methods=["POST", "GET"])
-def planetlist():    
+def planetlist(): 
+    planetas = ["Tatooine", "Alderaan", "Yavin IV", "Hoth", "Dagobah", "Bespin"]   
     if request.method == "GET":
-        planetas = ["Tatooine", "Alderaan", "Yavin IV", "Hoth", "Dagobah", "Bespin"]
-        return jsonify(planetas(map(planetas, planetas)))
+        numero = 0
+        return jsonify(planetas(map(numero, planetas)))
 
 
 @app.route("/characters", methods=["POST", "GET"])
