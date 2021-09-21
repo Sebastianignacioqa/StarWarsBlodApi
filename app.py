@@ -110,9 +110,10 @@ def addplanets():
 @app.route("/characters", methods=["POST", "GET"])
 def characters():
     if request.method == "GET":
-        characters = Characters.query.get(1)
-        if characters is not None:
-            return jsonify(characters.serialize_just_name())
+        characters = Characters.query.all()
+        characters = list(map(lambda characters: characters.serialize(), characters))
+        if planets is not None:
+            return jsonify(characters)
     else:
         characters = Characters()
         characters.name = request.json.get("name")
@@ -131,13 +132,32 @@ def characters():
 
     return jsonify(characters.serialize()), 200
 
+@app.route("/addvehicles", methods=["POST"])
+def addvehicles(): 
+    vehicles_list = request.json.get("vehicles_list")  
+    for vehicles in vehicles_list:
+        new_vehicles = Vehicles()
+        new_vehicles.name= vehicles["name"]
+        new_vehicles.model = vehicles["model"]
+        new_vehicles.manufacturer = vehicles["manufacturer"]
+        new_vehicles.cost_in_credits = vehicles["cost_in_credits"]
+        new_vehicles.crew = vehicles["crew"]
+        new_vehicles.passengers = vehicles["passengers"]
+        new_vehicles.cargo_capacity = vehicles["cargo_capacity"]
+        new_vehicles.vehicle_class = vehicles["vehicle_class"]
+        #new_vehicles.pilots = vehicles["pilots"]
+
+        db.session.add(new_vehicles)
+        db.session.commit()
+    return jsonify("Done"), 200
 
 @app.route("/vehicles", methods=["POST", "GET"])
 def vehicles():
     if request.method == "GET":
-        vehicles = Vehicles.query.get(1)
+        vehicles = Vehicles.query.all()
+        vehicles = list(map(lambda vehicles: vehicles.serialize(), vehicles))
         if vehicles is not None:
-            return jsonify(vehicles.serialize_just_name())
+            return jsonify(vehicles)
     else:
         vehicles = Vehicles()
         vehicles.name = request.json.get("name")
