@@ -42,12 +42,11 @@ def user():
 
     return jsonify(user.serialize()), 200
 
-
-@app.route("/favorite", methods=["POST", "GET"])
+@app.route("/user/favorite", methods=["POST", "GET"])
 def favorite():
     if request.method == "GET":
         favorite = Favorite.query.get(1)
-        if favorite is not None:    #Lo cambié por "favorite" porque decia "planets"
+        if favorite is not None:   
             return jsonify(favorite.serialize())
     else:
         favorite = Favorite()
@@ -61,6 +60,74 @@ def favorite():
 
     return jsonify(favorite.serialize()), 200
 
+@app.route("/favorite/planets/<int:planet_id>", methods=["POST"])
+def addplanetid(planet_id):
+    if request.method == "POST":
+        
+        favorite = Favorite()
+        favorite.user_id = request.json.get("user_id")
+        favorite.fav_planet_id = request.json.get("planet_id")
+
+        db.session.add(favorite)
+        db.session.commit()
+        return jsonify(favorite.serialize()), 200
+
+@app.route("/favorite/characters/<int:character_id>", methods=["POST"])
+def addcharacterid(character_id):
+    if request.method == "POST":
+        
+        favorite = Favorite()
+        favorite.user_id = request.json.get("user_id")
+        favorite.fav_character_id = request.json.get("character_id")
+
+        db.session.add(favorite)
+        db.session.commit()
+        return jsonify(favorite.serialize()), 200
+
+@app.route("/favorite/vehicles/<int:vehicle_id>", methods=["POST"])
+def addvehicleid(vehicle_id):
+    if request.method == "POST":
+        
+        favorite = Favorite()
+        favorite.user_id = request.json.get("user_id")
+        favorite.fav_vehicle_id = request.json.get("vehicle_id")
+
+        db.session.add(favorite)
+        db.session.commit()
+        return jsonify(favorite.serialize()), 200
+
+@app.route("/favorite/vehicles/<int:vehicle_id>", methods=["DELETE"])
+def deletevehicleid(vehicle_id):
+    if request.method == "DELETE":
+        
+        favorite = Favorite.query.get(vehicle_id)
+
+        db.session.delete(favorite)
+        db.session.commit()
+        return jsonify(favorite.serialize()), 200
+
+@app.route("/favorite/characters/<int:character_id>", methods=["DELETE"])
+def deletecharacters(character_id):
+    if request.method == "DELETE":
+        
+        favorite = Favorite.query.all()
+        favorite.fav_character_id = request.json.get("character_id")
+        favorite.user_id = request.json.get("user_id")
+
+        db.session.delete(favorite)
+        db.session.commit()
+        return jsonify(favorite.serialize()), 200
+
+@app.route("/favorite/planets/<int:planet_id>", methods=["DELETE"])
+def deleteplanets(planet_id):
+    if request.method == "DELETE":
+        
+        favorite = Favorite.query.filter_by(user_id = 1).first()
+        favorite.fav_planet_id = request.json.get("planet_id")
+
+        db.session.delete(favorite)
+        db.session.commit()
+        return jsonify(favorite.serialize()), 200
 
 @app.route("/planets", methods=["POST", "GET"])
 def planets():

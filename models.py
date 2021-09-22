@@ -49,7 +49,10 @@ class Favorite(db.Model):
 
     def serialize(self):
         return {
-            'user_id': self.user_id
+            'user_id': self.user_id,
+            'fav_planet_id': self.fav_planet_id,
+            'fav_character_id': self.fav_character_id,
+            'fav_vehicle_id': self.fav_vehicle_id
         }
     def serialize_just_userid(self): #Aca estoy retornando lo mismo dado que es el user.id lo que deberia retornar esta funcion
         return {
