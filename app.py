@@ -43,7 +43,6 @@ def user():
     return jsonify(user.serialize()), 200
 
 
-
 @app.route("/favorite", methods=["POST", "GET"])
 def favorite():
     if request.method == "GET":
@@ -82,11 +81,11 @@ def planets():
         planets.surface_water = request.json.get("surface_water")
         planets.residents = request.json.get("residents")
         
-        
         db.session.add(planets)
         db.session.commit()
 
     return jsonify(planets.serialize()), 200
+
 
 @app.route("/addplanets", methods=["POST"])
 def addplanets(): 
@@ -105,7 +104,35 @@ def addplanets():
 
         db.session.add(new_planets)
         db.session.commit()
+
     return jsonify("Done"), 200
+
+
+@app.route("/planets/<int:planet_id>", methods=["GET","POST"])
+def planet(planet_id):
+    if request.method == "GET":
+        if planet_id is not None:
+            planets = Planets.query.get(planet_id)
+            return jsonify(planets.serialize()), 200
+        else:
+            return jsonify('Missing id parameter in route'), 404
+    else:
+        planets = Planets()
+        planets.name = request.json.get("name")
+        planets.climate = request.json.get("climate")
+        planets.terrain = request.json.get("terrain")
+        planets.population = request.json.get("population")
+        planets.diameter = request.json.get("diameter")
+        planets.rotation_period = request.json.get("rotation_period")
+        planets.orbital_period = request.json.get("orbital_period")
+        planets.surface_water = request.json.get("surface_water")
+        planets.residents = request.json.get("residents")
+        
+        db.session.add(planets)
+        db.session.commit()
+
+    return jsonify(planets.serialize()), 200
+
 
 @app.route("/characters", methods=["POST", "GET"])
 def characters():
@@ -132,24 +159,33 @@ def characters():
 
     return jsonify(characters.serialize()), 200
 
-@app.route("/addvehicles", methods=["POST"])
-def addvehicles(): 
-    vehicles_list = request.json.get("vehicles_list")  
-    for vehicles in vehicles_list:
-        new_vehicles = Vehicles()
-        new_vehicles.name= vehicles["name"]
-        new_vehicles.model = vehicles["model"]
-        new_vehicles.manufacturer = vehicles["manufacturer"]
-        new_vehicles.cost_in_credits = vehicles["cost_in_credits"]
-        new_vehicles.crew = vehicles["crew"]
-        new_vehicles.passengers = vehicles["passengers"]
-        new_vehicles.cargo_capacity = vehicles["cargo_capacity"]
-        new_vehicles.vehicle_class = vehicles["vehicle_class"]
-        #new_vehicles.pilots = vehicles["pilots"]
 
-        db.session.add(new_vehicles)
+@app.route("/characters/<int:character_id>", methods=["GET","POST"])
+def character(character_id):
+    if request.method == "GET":
+        if character_id is not None:
+            characters = Characters.query.get(character_id)
+            return jsonify(characters.serialize()), 200
+        else:
+            return jsonify('Missing id parameter in route'), 404
+    else:
+        characters = Characters()
+        characters.name = request.json.get("name")
+        characters.height = request.json.get("height")
+        characters.mass = request.json.get("mass")
+        characters.hair_color = request.json.get("hair_color")
+        characters.skin_color = request.json.get("skin_color")
+        characters.eye_color = request.json.get("eye_color")
+        characters.birth_year = request.json.get("birth_year")
+        characters.gender = request.json.get("gender")
+        characters.homeworld = request.json.get("homeworld")
+        #characters.vehicles = request.json.get("vehicles")
+        
+        db.session.add(characters)
         db.session.commit()
-    return jsonify("Done"), 200
+
+    return jsonify(characters.serialize()), 200
+
 
 @app.route("/vehicles", methods=["POST", "GET"])
 def vehicles():
@@ -175,6 +211,52 @@ def vehicles():
 
     return jsonify(vehicles.serialize()), 200
 
+
+@app.route("/addvehicles", methods=["POST"])
+def addvehicles(): 
+    vehicles_list = request.json.get("vehicles_list")  
+    for vehicles in vehicles_list:
+        new_vehicles = Vehicles()
+        new_vehicles.name= vehicles["name"]
+        new_vehicles.model = vehicles["model"]
+        new_vehicles.manufacturer = vehicles["manufacturer"]
+        new_vehicles.cost_in_credits = vehicles["cost_in_credits"]
+        new_vehicles.crew = vehicles["crew"]
+        new_vehicles.passengers = vehicles["passengers"]
+        new_vehicles.cargo_capacity = vehicles["cargo_capacity"]
+        new_vehicles.vehicle_class = vehicles["vehicle_class"]
+        #new_vehicles.pilots = vehicles["pilots"]
+
+        db.session.add(new_vehicles)
+        db.session.commit()
+        
+    return jsonify("Done"), 200
+
+
+@app.route("/vehicles/<int:vehicle_id>", methods=["GET","POST"])
+def vehicle(vehicle_id):
+    if request.method == "GET":
+        if vehicle_id is not None:
+            vehicles = Vehicles.query.get(vehicle_id)
+            return jsonify(vehicles.serialize()), 200
+        else:
+            return jsonify('Missing id parameter in route'), 404
+    else:
+        vehicles = Vehicles()
+        vehicles.name = request.json.get("name")
+        vehicles.model = request.json.get("model")
+        vehicles.manufacturer = request.json.get("manufacturer")
+        vehicles.cost_in_credits = request.json.get("cost_in_credits")
+        vehicles.crew = request.json.get("crew")
+        vehicles.passengers = request.json.get("passengers")
+        vehicles.cargo_capacity = request.json.get("cargo_capacity")
+        vehicles.vehicle_class = request.json.get("vehicle_class")
+        vehicles.pilots = request.json.get("pilots")
+        
+        db.session.add(vehicles)
+        db.session.commit()
+
+    return jsonify(vehicles.serialize()), 200
 
 
 if __name__ == "__main__":
