@@ -42,10 +42,33 @@ def user():
 
     return jsonify(user.serialize()), 200
 
+
+@app.route("/favorite/user/<int:user_id>", methods=["GET","POST"])
+def userFav(user_id):
+    if request.method == "GET":
+        if user_id is not None:
+            favorites = Favorite.query.filter_by(user_id=user_id)
+            favorites = list(map(lambda favorite: favorite.serialize(), favorites))
+            return jsonify(favorites), 200
+        else:
+            return jsonify('Missing id parameter in route'), 404
+    else:
+        favorite = Favorite()
+        favorite.user_id = request.json.get("user_id")
+        favorite.fav_planet_id = request.json.get("fav_planet_id")
+        favorite.fav_character_id = request.json.get("fav_character_id")
+        favorite.fav_vehicle_id = request.json.get("fav_vehicle_id")
+        
+        db.session.add(favorite)
+        db.session.commit()
+
+    return jsonify(favorite.serialize()), 200
+
+
 @app.route("/user/favorite", methods=["POST", "GET"])
 def favorite():
     if request.method == "GET":
-        favorite = Favorite.query.get(1)
+        favorite = Favorite.query.get(3)
         if favorite is not None:   
             return jsonify(favorite.serialize())
     else:
